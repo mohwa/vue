@@ -17,12 +17,42 @@
 
     <div id="card">
         <header>{{ title }}</header>
-        <!--<div v-html="content"></div>-->
+        <!--<form target="#">-->
+            <input type="text" class="item-value" v-on:keypress.enter="addItem" />
+            <button id="buttonId1" v-on:click="addItem">AddItem</button>
+        <!--</form>-->
 
         <ul v-for="item in items">
-            <li>{{ item.id }}</li>
+            <li>
+                <button v-on:click="deleteItem(item.id)">X</button>
+                <span>{{ item.text }}</span>
+            </li>
         </ul>
     </div>
+
+    <!--<div>CARD2</div>-->
+
+    <!--<script type="text/javascript">-->
+
+        <!--function withMacroTask (fn) {-->
+
+            <!--const a = 'a';-->
+
+            <!--return fn && fn._withTask || function(){-->
+
+                <!--const b = 'b';-->
+
+                <!--return function () {-->
+
+                    <!--const c = 'c';-->
+
+                    <!--console.log(a, b, c);-->
+                <!--}-->
+            <!--}();-->
+        <!--}-->
+
+        <!--document.querySelectorAll('div')[1].addEventListener('click', withMacroTask())-->
+    <!--</script>-->
 
 </head>
 <body>

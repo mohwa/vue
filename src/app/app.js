@@ -4,17 +4,29 @@ const card = new Vue({
     el: '#card',
     data: {
         title: "CARD",
-        items: [
-            {id: '1'},
-            {id: '2'},
-            {id: '3'},
-            {id: '4'},
-            {id: '5'},
-            {id: '6'},
-            {id: '7'}
-        ]
+        items: []
+    },
+    methods: {
+        addItem: function () {
+
+            const input = document.querySelector('#card .item-value');
+
+            if (!input.value) return;
+
+            const items = this.items;
+
+            items.push({id: items.length, text: input.value});
+
+            input.value = '';
+        },
+        deleteItem: function (index) {
+            this.items.splice(index, 1);
+        }
     }
+
 });
+
+
 
 
 export default card;
