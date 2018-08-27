@@ -17,17 +17,76 @@
 
     <div id="card">
         <header>{{ title }}</header>
-        <!--<form target="#">-->
-            <input type="text" class="item-value" v-on:keypress.enter="addItem" />
-            <button id="buttonId1" v-on:click="addItem">AddItem</button>
+        <!--<form v-on:submit.prevent="submit">-->
+            <input type="text" class="item-value" v-on:keypress.enter="addItem" v-model="input" v-bind:disabled="disabled" />
+            <button id="buttonId1" v-on:click="addItem" v-bind:class="colorClassName" v-bind:style="changeBackGroundColor" v-bind:disabled="disabled">AddItem</button>
+            <button v-on:click="changeColorClassName">changeColorClassName</button>
+            <button v-on:click="changeInputButtonDisabled">changeInputButtonDisabled</button>
+            <button v-on:click="++total">incrementTotalCount</button>
+            <input type="range" min="0" max="100" value="0" />
         <!--</form>-->
 
-        <ul v-for="item in items">
-            <li>
-                <button v-on:click="deleteItem(item.id)">X</button>
-                <span>{{ item.text }}</span>
-            </li>
-        </ul>
+        <template v-if="items.length > 0">
+            <h2>ITEM LIST</h2>
+            <ul v-for="item in items">
+                <li>
+                    <button v-on:click="deleteItem(item.id)">X</button>
+                    <span>{{ item.text }}</span>
+                    <div>
+                        <div>{{ item.text | addPrefix | lowercase }}</div>
+                        <div>{{ item.text | addSuffix | uppercase }}</div>
+                    </div>
+                </li>
+            </ul>
+        </template>
+        <!-- v-if 지시자 엘리먼트 뒤에 바로 나와야한다 -->
+        <div v-else>아이템이 없습니다.</div>
+        <div>TOTAL COUNT: {{ totalCount }}</div>
+        <div>LIST UPDATE COUNT: {{ listUpdateCount }}</div>
+        <div>UPDATE INPUT TEXT: {{ input }}</div>
+        <div>UPDATE TOTAL COUNT: {{ total }}</div>
+    </div>
+
+    <div id="app">
+        <input type="text" v-model="input" />
+        <div>{{ input }}</div>
+        <textarea  v-model="message"></textarea>
+        <div style="white-space: pre">{{ message }}</div>
+        <hr>
+        <label>
+            <span>체크 박스 예제</span>
+            <span><input type="checkbox" v-model="checked" /></span>
+        </label>
+        <span>{{ checked ? '체크했음' : '체크품!!'}}</span>
+        <hr>
+        <template v-for="item in [{text: 'A', value: '1'}, {text: 'B', value: '2'}, {text: 'C', value: '3'}]">
+        <label>
+            <span>{{item.text}}</span>
+            <span><input type="radio" name="item" v-bind:value="item.value" v-model="radioValue" /></span>
+        </label>
+        </template>
+        <div>{{ radioValue }}</div>
+
+        <select v-model="selectValue">
+            <template v-for="(item, index) in [{text: 'AA', value: '1'}, {text: 'BB', value: '2'}, {text: 'CC', value: '3'}]">
+                <option v-bind:value="item.value">{{ item.text }}</option>
+            </template>
+        </select>
+        <div>{{ selectValue }}</div>
+    </div>
+
+    <div id="ex_component">
+        <template v-for="(item, index) in items">
+            <!-- callparentmethod 라는 커스텀 이벤트를 선언한 후, this.$emit 메서드를 통해, 호출한다 -->
+            <bx-radio v-bind:text="item.text" v-bind:value="item.value" v-on:callparentmethod="parentMethod"></bx-radio>
+        </template>
+        <div>{{ childCurrentRadioValue }}</div>
+    </div>
+
+    <div id="dynamic_component_view">
+        <!-- 바인딩된 컴포넌트를 is 지시자를 통해, 동적으로 변경시키는듯하다. -->
+        <component v-bind:is="currentView"></component>
+        <button v-on:click="toggleComponent">toggleComponent</button>
     </div>
 
     <!--<div>CARD2</div>-->
